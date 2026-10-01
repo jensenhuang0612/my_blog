@@ -1,0 +1,369 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "JENSEN",
+  description = "JENSEN 的个人技术博客",
+  image = "/og-image.png",
+} = Astro.props;
+
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : Astro.url.href;
+
+const ogImage = Astro.site
+  ? new URL(image, Astro.site).href
+  : new URL(image, Astro.url).href;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const savedTheme = localStorage.getItem("theme");
+        const theme =
+          savedTheme === "dark" ||
+          (savedTheme !== "light" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ? "dark"
+            : "light";
+
+        root.dataset.theme = theme;
+        document
+          .querySelector('meta[name="theme-color"]')
+          ?.setAttribute("content", theme === "dark" ? "#111111" : "#ffffff");
+      })();
+    </script>
+    <style is:inline>
+      html {
+        background: #ffffff;
+      }
+
+      html[data-theme="dark"] {
+        background: #111111;
+      }
+    </style>
+
+    <title>{title}</title>
+
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="JENSEN" />
+    <meta property="og:locale" content="zh_CN" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<div id="image-lightbox" class="image-lightbox" aria-hidden="true">
+  <button class="image-lightbox-close" type="button" aria-label="关闭图片">×</button>
+  <img id="image-lightbox-img" src="" alt="" />
+</div>
+
+<script is:inline>
+  const lightbox = document.querySelector("#image-lightbox");
+  const lightboxImage = document.querySelector("#image-lightbox-img");
+  const closeButton = document.querySelector(".image-lightbox-close");
+
+  const closeLightbox = () => {
+    lightbox?.classList.remove("open");
+    lightbox?.setAttribute("aria-hidden", "true");
+
+    if (lightboxImage) {
+      lightboxImage.src = "";
+      lightboxImage.alt = "";
+    }
+
+    document.body.style.overflow = "";
+  };
+
+  document.querySelectorAll("img").forEach((image) => {
+    image.style.cursor = "zoom-in";
+
+    image.addEventListener("click", () => {
+      if (!lightbox || !lightboxImage) return;
+
+      lightboxImage.src = image.currentSrc || image.src;
+      lightboxImage.alt = image.alt || "";
+
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  closeButton?.addEventListener("click", closeLightbox);
+
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLightbox();
+    }
+  });
+</script>
+
+<style>
+  .image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgb(0 0 0 / 82%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      visibility 0.2s ease;
+  }
+
+  .image-lightbox.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .image-lightbox img {
+    display: block;
+    max-width: min(92vw, 1400px);
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    cursor: default;
+  }
+
+  .image-lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: white;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  @media (max-width: 700px) {
+    .image-lightbox {
+      padding: 20px;
+    }
+
+    .image-lightbox img {
+      max-width: 96vw;
+      max-height: 86vh;
+    }
+
+    .image-lightbox-close {
+      top: 12px;
+      right: 14px;
+    }
+  }
+</style>
+<!-- JENSEN_CODE_CONTROLS -->
+<script is:inline>
+(function () {
+  function setup() {
+    document.querySelectorAll("pre").forEach(function (pre) {
+      var code = pre.querySelector("code");
+      if (!code) return;
+
+      var wrapper =
+        pre.closest("figure.expressive-code") ||
+        pre.parentElement ||
+        pre;
+
+      if (wrapper.getAttribute("data-jensen-ready") === "1") return;
+
+      var renderedLines = code.querySelectorAll(".ec-line");
+      var lineCount = renderedLines.length;
+
+      if (lineCount === 0) {
+        var text = (code.textContent || "")
+          .replace(/\r\n/g, "\n")
+          .replace(/\r/g, "\n")
+          .replace(/\n$/, "");
+
+        lineCount = text ? text.split("\n").length : 0;
+      }
+
+      var lines = new Array(lineCount);
+
+      if (lineCount <= 6) return;
+
+      wrapper.setAttribute("data-jensen-ready", "1");
+      wrapper.style.position = "relative";
+
+      var originalMaxHeight = pre.style.maxHeight;
+      var originalOverflow = pre.style.overflow;
+
+      pre.style.maxHeight = "150px";
+      pre.style.overflowX = "auto";
+      pre.style.overflowY = "hidden";
+
+      var copy = document.createElement("button");
+      copy.type = "button";
+      copy.textContent = "复制";
+      copy.className = "jensen-copy-button";
+
+      copy.onclick = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        navigator.clipboard.writeText(
+          code.textContent || ""
+        ).then(function () {
+          copy.textContent = "已复制";
+
+          setTimeout(function () {
+            copy.textContent = "复制";
+          }, 1500);
+        }).catch(function () {
+          copy.textContent = "复制失败";
+
+          setTimeout(function () {
+            copy.textContent = "复制";
+          }, 1500);
+        });
+      };
+
+      var expand = document.createElement("button");
+      expand.type = "button";
+      expand.textContent =
+        "展开全部（" + lineCount + " 行）";
+      expand.className = "jensen-expand-button";
+
+      var collapsed = true;
+
+      expand.onclick = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        collapsed = !collapsed;
+
+        if (collapsed) {
+          pre.style.maxHeight = "150px";
+          pre.style.overflowX = "auto";
+          pre.style.overflowY = "hidden";
+          expand.textContent =
+            "展开全部（" + lineCount + " 行）";
+        } else {
+          pre.style.maxHeight =
+            originalMaxHeight || "none";
+          pre.style.overflowX = "auto";
+          pre.style.overflowY =
+            originalOverflow || "visible";
+          expand.textContent = "收起";
+        }
+      };
+
+      wrapper.appendChild(copy);
+      wrapper.appendChild(expand);
+    });
+  }
+
+  function start() {
+    setup();
+    setTimeout(setup, 100);
+    setTimeout(setup, 500);
+    setTimeout(setup, 1000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
+
+  document.addEventListener("astro:page-load", start);
+})();
+</script>
+
+<style is:inline>
+.jensen-copy-button {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 99999 !important;
+  display: block !important;
+  padding: 5px 9px !important;
+  border: 1px solid rgba(128,128,128,.45) !important;
+  border-radius: 5px !important;
+  background: rgba(128,128,128,.15) !important;
+  color: inherit !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.jensen-expand-button {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 10px !important;
+  z-index: 99999 !important;
+  display: block !important;
+  transform: translateX(-50%) !important;
+  padding: 6px 14px !important;
+  border: 1px solid rgba(128,128,128,.5) !important;
+  border-radius: 5px !important;
+  background: var(--surface,#fff) !important;
+  color: var(--text,#111) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.jensen-copy-button:hover,
+.jensen-expand-button:hover {
+  border-color: currentColor !important;
+}
+</style>
+<!-- JENSEN_CODE_CONTROLS -->

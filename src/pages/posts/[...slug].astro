@@ -1,0 +1,743 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+
+  return posts.map((post) => ({
+    params: {
+      slug: post.id,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+const { post } = Astro.props;
+
+const allPosts = await getCollection("posts");
+
+const sortedPosts = [...allPosts].sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const currentIndex = sortedPosts.findIndex(
+  (item) => item.id === post.id,
+);
+
+const previousPost =
+  currentIndex < sortedPosts.length - 1
+    ? sortedPosts[currentIndex + 1]
+    : null;
+
+const nextPost =
+  currentIndex > 0
+    ? sortedPosts[currentIndex - 1]
+    : null;
+
+const { Content, headings } = await render(post);
+
+const formattedDate = post.data.date.toLocaleDateString(
+  "zh-CN",
+  {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  },
+);
+---
+
+<Layout
+  title={`${post.data.title} — JENSEN`}
+  description={post.data.description}
+>
+  <article class="article">
+    <div class="container">
+      <header class="article-header">
+        <div class="meta">
+          <span>{formattedDate}</span>
+          <span>{post.data.category}</span>
+        </div>
+
+        <h1>{post.data.title}</h1>
+
+        <p class="description">
+          {post.data.description}
+        </p>
+
+        {
+          post.data.tags.length > 0 && (
+            <div class="tags">
+              {post.data.tags.map((tag) => (
+                <a href={`/tags/${encodeURIComponent(tag)}/`}>
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      <div class="article-layout">
+        <div class="article-content">
+          <Content />
+        </div>
+
+        {
+          headings.length > 0 && (
+            <aside class="toc">
+              <div class="toc-inner">
+                <p class="toc-title">目录</p>
+
+                <ul>
+                  {headings.map((heading) => (
+                    <li class={`depth-${heading.depth}`}>
+                      <a href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
+          )
+        }
+      </div>
+
+      <nav class="post-navigation" aria-label="文章导航">
+        {
+          previousPost ? (
+            <a
+              class="post-navigation-item previous"
+              href={`/posts/${previousPost.id}/`}
+            >
+              <span class="navigation-label">
+                ← 上一篇
+              </span>
+
+              <strong>
+                {previousPost.data.title}
+              </strong>
+
+              <small>
+                {previousPost.data.description}
+              </small>
+            </a>
+          ) : (
+            <div class="post-navigation-placeholder"></div>
+          )
+        }
+
+        {
+          nextPost ? (
+            <a
+              class="post-navigation-item next"
+              href={`/posts/${nextPost.id}/`}
+            >
+              <span class="navigation-label">
+                下一篇 →
+              </span>
+
+              <strong>
+                {nextPost.data.title}
+              </strong>
+
+              <small>
+                {nextPost.data.description}
+              </small>
+            </a>
+          ) : (
+            <div class="post-navigation-placeholder"></div>
+          )
+        }
+      </nav>
+    </div>
+  </article>
+
+  <div
+    id="image-lightbox"
+    class="image-lightbox"
+    aria-hidden="true"
+  >
+    <button
+      class="image-lightbox-close"
+      type="button"
+      aria-label="关闭图片"
+    >
+      ×
+    </button>
+
+    <img
+      id="image-lightbox-img"
+      src=""
+      alt=""
+    />
+  </div>
+</Layout>
+
+<script>
+  const initCodeFolding = () => {
+    document
+      .querySelectorAll("figure.expressive-code")
+      .forEach((block) => {
+        const figure = block as HTMLElement;
+
+        if (figure.dataset.codeFoldReady === "true") {
+          return;
+        }
+
+        const pre = figure.querySelector("pre");
+        const code = pre?.querySelector("code");
+
+        if (!pre || !code) {
+          return;
+        }
+
+        const text = code.textContent ?? "";
+        const lines = text.split("\n");
+
+        if (lines.length <= 6) {
+          figure.dataset.codeFoldReady = "true";
+          return;
+        }
+
+        figure.dataset.codeFoldReady = "true";
+        figure.classList.add("code-collapsed");
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "code-expand";
+        button.textContent = `展开全部（${lines.length} 行）`;
+
+        button.addEventListener("click", () => {
+          figure.classList.remove("code-collapsed");
+          button.remove();
+        });
+
+        figure.appendChild(button);
+      });
+  };
+
+  initCodeFolding();
+
+  requestAnimationFrame(() => {
+    initCodeFolding();
+  });
+
+  const observer = new MutationObserver(() => {
+    initCodeFolding();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  const lightbox = document.querySelector("#image-lightbox");
+  const lightboxImage = document.querySelector("#image-lightbox-img");
+  const closeButton = document.querySelector(".image-lightbox-close");
+
+  function closeLightbox() {
+    lightbox?.classList.remove("open");
+    lightbox?.setAttribute("aria-hidden", "true");
+
+    if (lightboxImage) {
+      lightboxImage.setAttribute("src", "");
+      lightboxImage.setAttribute("alt", "");
+    }
+
+    document.body.style.overflow = "";
+  }
+
+  document
+    .querySelectorAll(".article-content img")
+    .forEach((image) => {
+      image.addEventListener("click", () => {
+        if (!lightbox || !lightboxImage) {
+          return;
+        }
+
+        const imageElement = image as HTMLImageElement;
+
+        lightboxImage.setAttribute(
+          "src",
+          imageElement.currentSrc || imageElement.src,
+        );
+
+        lightboxImage.setAttribute(
+          "alt",
+          imageElement.alt || "",
+        );
+
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+  closeButton?.addEventListener("click", closeLightbox);
+
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLightbox();
+    }
+  });
+</script>
+
+<style>
+  .article {
+    width: min(calc(100% - 40px), 1120px);
+    margin: 0 auto;
+  }
+
+  .article-header {
+    max-width: 800px;
+    padding: 86px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meta {
+    display: flex;
+    gap: 16px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .article-header h1 {
+    margin: 20px 0 0;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.06em;
+  }
+
+  .description {
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .tags a:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 800px) 220px;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .article-content {
+    min-width: 0;
+    padding: 64px 0 40px;
+    font-size: 1.03rem;
+    line-height: 1.78;
+  }
+
+  .article-content :global(h1) {
+    margin-top: 0;
+    margin-bottom: 32px;
+    font-size: 2.4rem;
+    line-height: 1.2;
+  }
+
+  .article-content :global(h2) {
+    margin-top: 58px;
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+  }
+
+  .article-content :global(h3) {
+    margin-top: 44px;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+    line-height: 1.4;
+  }
+
+  .article-content :global(h4) {
+    margin-top: 32px;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+  }
+
+  .article-content :global(p) {
+    margin: 20px 0;
+  }
+
+  .article-content :global(ul),
+  .article-content :global(ol) {
+    margin: 20px 0;
+    padding-left: 1.6rem;
+  }
+
+  .article-content :global(li) {
+    margin: 8px 0;
+  }
+
+  .article-content :global(a) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article-content :global(a:hover) {
+    opacity: 0.65;
+  }
+
+  .article-content :global(blockquote) {
+    margin: 30px 0;
+    padding: 4px 24px;
+    border-left: 3px solid var(--text);
+    color: var(--muted);
+  }
+
+  .article-content :global(code) {
+    padding: 2px 6px;
+    background: var(--code-bg) !important;
+    font-family:
+      "JetBrains Mono",
+      Consolas,
+      "Courier New",
+      monospace;
+    font-size: 0.9em;
+  }
+
+  .article-content :global(pre) {
+    position: relative;
+    overflow-x: auto;
+    margin: 28px 0;
+    padding: 20px;
+    background: var(--code-bg) !important;
+    border: 0;
+    border-radius: 6px;
+    line-height: 1.6;
+  }
+
+  .article-content :global(pre code) {
+    display: block;
+    padding: 0;
+    background: transparent !important;
+    font-family:
+      "JetBrains Mono",
+      Consolas,
+      "Courier New",
+      monospace;
+    font-size: 0.9rem;
+  }
+
+  .article-content :global(figure.expressive-code) {
+    position: relative;
+    margin: 28px 0;
+  }
+
+  .article-content :global(
+    figure.expressive-code.code-collapsed
+  ) {
+    max-height: 250px;
+    overflow: hidden;
+  }
+
+  .article-content :global(
+    figure.expressive-code.code-collapsed::after
+  ) {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 70px;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--code-bg)
+    );
+  }
+
+  .code-expand {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    z-index: 20;
+    transform: translateX(-50%);
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .code-expand:hover {
+    color: var(--text);
+    border-color: var(--text);
+  }
+
+  .article-content :global(img) {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin: 32px auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: zoom-in;
+  }
+
+  .image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgb(0 0 0 / 82%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    cursor: zoom-out;
+    transition:
+      opacity 0.2s ease,
+      visibility 0.2s ease;
+  }
+
+  .image-lightbox.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .image-lightbox img {
+    display: block;
+    max-width: 95vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    cursor: default;
+  }
+
+  .image-lightbox-close {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent !important;
+    color: white;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .toc {
+    position: relative;
+    padding-top: 70px;
+  }
+
+  .toc-inner {
+    position: sticky;
+    top: 32px;
+    padding-left: 24px;
+    border-left: 1px solid var(--border);
+  }
+
+  .toc-title {
+    margin: 0 0 14px;
+    color: var(--text);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .toc li {
+    margin: 0;
+  }
+
+  .toc a {
+    display: block;
+    padding: 5px 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+  }
+
+  .toc .depth-3 {
+    padding-left: 14px;
+  }
+
+  .toc .depth-4 {
+    padding-left: 28px;
+  }
+
+  .post-navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 100px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+
+  .post-navigation-item {
+    display: flex;
+    flex-direction: column;
+    min-height: 130px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .post-navigation-item:hover {
+    background: var(--surface-hover);
+    border-color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .navigation-label {
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .post-navigation-item strong {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .post-navigation-item small {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .post-navigation-item.next {
+    text-align: right;
+  }
+
+  .post-navigation-placeholder {
+    min-height: 130px;
+  }
+
+  .article-content :global(hr) {
+    margin: 48px 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .article-content :global(table) {
+    width: 100%;
+    margin: 32px 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .article-content :global(th),
+  .article-content :global(td) {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .article-content :global(th) {
+    background: var(--code-bg) !important;
+    font-weight: 700;
+  }
+
+  @media (max-width: 1050px) {
+    .article-layout {
+      display: block;
+    }
+
+    .toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .article {
+      width: min(calc(100% - 32px), 1120px);
+    }
+
+    .article-header {
+      padding: 70px 0 50px;
+    }
+
+    .article-header h1 {
+      font-size: 2.5rem;
+    }
+
+    .article-content {
+      padding: 50px 0 40px;
+      font-size: 1rem;
+    }
+
+    .article-content :global(h2) {
+      margin-top: 48px;
+      font-size: 1.6rem;
+    }
+
+    .article-content :global(h3) {
+      margin-top: 36px;
+      font-size: 1.25rem;
+    }
+
+    .article-content :global(
+      figure.expressive-code.code-collapsed
+    ) {
+      max-height: 220px;
+    }
+
+    .post-navigation {
+      grid-template-columns: 1fr;
+    }
+
+    .post-navigation-item.next {
+      text-align: left;
+    }
+  }
+</style>

@@ -1,0 +1,245 @@
+---
+const navigation = [
+  { name: "首页", href: "/" },
+  { name: "文章", href: "/posts/" },
+  { name: "分类", href: "/categories/" },
+  { name: "Tags", href: "/tags/" },
+  { name: "搜索", href: "/search/" },
+  { name: "项目", href: "/projects/" },
+  { name: "归档", href: "/archives/" },
+  { name: "关于", href: "/about/" },
+  { name: "联系", href: "/contact/" },
+  { name: "赞助", href: "/sponsor/" },
+];
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      JENSEN
+    </a>
+
+    <div class="header-right">
+      <nav id="site-navigation" aria-label="主导航">
+        {
+          navigation.map((item) => (
+            <a
+              href={item.href}
+              class:list={{
+                active:
+                  pathname === item.href ||
+                  (item.href !== "/" &&
+                    pathname.startsWith(item.href)),
+              }}
+            >
+              {item.name}
+            </a>
+          ))
+        }
+      </nav>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="打开导航菜单"
+        aria-controls="site-navigation"
+        aria-expanded="false"
+      >
+        菜单
+      </button>
+
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="切换深色模式"
+        title="切换深色模式"
+      >
+        <span class="theme-icon">☾</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const root = document.documentElement;
+  const header = document.querySelector(".site-header");
+  const menuButton = document.querySelector(".nav-toggle");
+  const navigationMenu = document.querySelector("#site-navigation");
+  const themeButton = document.querySelector(".theme-toggle");
+  const icon = document.querySelector(".theme-icon");
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+
+  if (root.dataset.theme === "dark" && icon) {
+    icon.textContent = "☀";
+  }
+
+  menuButton?.addEventListener("click", () => {
+    const isOpen = header?.classList.toggle("nav-open") ?? false;
+
+    menuButton.setAttribute("aria-expanded", String(isOpen));
+    menuButton.setAttribute(
+      "aria-label",
+      isOpen ? "关闭导航菜单" : "打开导航菜单",
+    );
+  });
+
+  navigationMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      header?.classList.remove("nav-open");
+      menuButton?.setAttribute("aria-expanded", "false");
+      menuButton?.setAttribute("aria-label", "打开导航菜单");
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      header?.classList.remove("nav-open");
+      menuButton?.setAttribute("aria-expanded", "false");
+      menuButton?.setAttribute("aria-label", "打开导航菜单");
+    }
+  });
+
+  themeButton?.addEventListener("click", () => {
+    const isDark = root.dataset.theme === "dark";
+
+    if (isDark) {
+      root.dataset.theme = "light";
+      localStorage.setItem("theme", "light");
+      themeColor?.setAttribute("content", "#ffffff");
+
+      if (icon) {
+        icon.textContent = "☾";
+      }
+    } else {
+      root.dataset.theme = "dark";
+      localStorage.setItem("theme", "dark");
+      themeColor?.setAttribute("content", "#111111");
+
+      if (icon) {
+        icon.textContent = "☀";
+      }
+    }
+  });
+</script>
+
+<style>
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .nav-toggle {
+    display: none;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  .theme-toggle:hover {
+    background: var(--code-bg);
+    border-color: var(--text);
+  }
+
+  .theme-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 1100px) {
+    .header-right {
+      gap: 16px;
+    }
+
+    .site-header nav {
+      gap: 18px;
+    }
+  }
+
+  @media (max-width: 850px) {
+    .site-header {
+      position: relative;
+    }
+
+    .header-inner {
+      gap: 16px;
+    }
+
+    .header-right {
+      justify-content: flex-end;
+    }
+
+    .site-header nav {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      padding: 8px 20px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .site-header.nav-open nav {
+      display: flex;
+    }
+
+    .site-header nav a {
+      padding: 10px 0;
+      font-size: 0.95rem;
+    }
+
+    .nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .header-inner {
+      min-height: 64px;
+    }
+
+    .logo {
+      flex-shrink: 0;
+    }
+
+    .header-right {
+      gap: 10px;
+    }
+
+    .theme-toggle {
+      width: 34px;
+      height: 34px;
+    }
+  }
+</style>

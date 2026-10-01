@@ -1,0 +1,145 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="赞助 — JENSEN" description="支持 JENSEN 的技术博客">
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">SPONSOR</p>
+      <h1>赞助</h1>
+      <p>如果这里的内容对你有帮助，可以请我喝杯咖啡。</p>
+    </header>
+
+    <section class="sponsor-grid">
+      <div class="sponsor-card">
+        <h2>微信支付</h2>
+        <img src="/images/pay/wechat-pay.png" alt="微信支付二维码" />
+      </div>
+
+      <div class="sponsor-card">
+        <h2>支付宝</h2>
+        <img src="/images/pay/alipay.png" alt="支付宝二维码" />
+      </div>
+
+      <div class="sponsor-card">
+        <h2>USDT</h2>
+        <p class="network">TRON · TRC20</p>
+        <img src="/images/pay/usdt-trc20.png" alt="USDT TRC20 收款二维码" />
+        <code>THM9jiirnfHQm1BJHeGthNyfJ9K89wsXbY</code>
+        <button id="copy-address" type="button">复制地址</button>
+        <p id="copy-status"></p>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  const button = document.querySelector("#copy-address");
+  const status = document.querySelector("#copy-status");
+
+  button?.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(
+      "THM9jiirnfHQm1BJHeGthNyfJ9K89wsXbY",
+    );
+
+    if (status) {
+      status.textContent = "已复制";
+      setTimeout(() => {
+        status.textContent = "";
+      }, 1500);
+    }
+  });
+</script>
+
+<style>
+  .page-header {
+    padding: 100px 0 70px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  h1 {
+    margin: 12px 0 0;
+    font-size: 4rem;
+    letter-spacing: -0.06em;
+  }
+
+  .page-header > p:last-child {
+    max-width: 600px;
+    margin-top: 20px;
+    color: var(--muted);
+  }
+
+  .sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 60px 0 100px;
+  }
+
+  .sponsor-card {
+    padding: 28px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .sponsor-card h2 {
+    margin: 0 0 24px;
+    font-size: 1.2rem;
+  }
+
+  .sponsor-card img {
+    display: block;
+    width: min(100%, 240px);
+    aspect-ratio: 1;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  .network {
+    margin: -14px 0 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .sponsor-card code {
+    display: block;
+    margin-top: 20px;
+    padding: 12px;
+    overflow-wrap: anywhere;
+    font-size: 0.75rem;
+  }
+
+  .sponsor-card button {
+    margin-top: 12px;
+    padding: 9px 16px;
+    border: 1px solid var(--border);
+    background: var(--text);
+    color: var(--inverse-text);
+    cursor: pointer;
+  }
+
+  #copy-status {
+    min-height: 1.5em;
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 800px) {
+    .sponsor-grid {
+      grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: 3rem;
+    }
+  }
+</style>

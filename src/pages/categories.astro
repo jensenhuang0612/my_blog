@@ -1,0 +1,128 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+
+const categories = new Map<string, number>();
+
+for (const post of posts) {
+  const category = post.data.category;
+
+  categories.set(
+    category,
+    (categories.get(category) ?? 0) + 1,
+  );
+}
+
+const sortedCategories = [...categories.entries()].sort(
+  (a, b) => a[0].localeCompare(b[0]),
+);
+---
+
+<Layout
+  title="分类 — JENSEN"
+  description="JENSEN 博客文章分类"
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">CATEGORIES</p>
+      <h1>分类</h1>
+      <p>
+        按技术领域整理文章。
+      </p>
+    </header>
+
+    <section class="category-list">
+      {
+        sortedCategories.map(([category, count]) => (
+          <a
+            href={`/categories/${encodeURIComponent(category)}/`}
+            class="category"
+          >
+            <span>{category}</span>
+            <small>{count} 篇文章 →</small>
+          </a>
+        ))
+      }
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    padding: 100px 0 70px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  h1 {
+    margin: 12px 0 0;
+    font-size: 4rem;
+    letter-spacing: -0.06em;
+  }
+
+  .page-header > p:last-child {
+    margin-top: 20px;
+    color: var(--muted);
+  }
+
+  .category-list {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .category {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .category:last-child {
+    border-bottom: 0;
+  }
+
+  .category span {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .category small {
+    color: var(--muted);
+  }
+
+  .category:is(:hover, :focus-visible) {
+    background: var(--surface-hover);
+    transform: translateX(8px);
+  }
+
+  .category:is(:hover, :focus-visible) span {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  @media (max-width: 700px) {
+    h1 {
+      font-size: 3rem;
+    }
+
+    .category {
+      padding: 22px 0;
+    }
+
+    .category:is(:hover, :focus-visible) {
+      transform: translateX(4px);
+    }
+  }
+</style>

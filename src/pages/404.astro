@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404 — JENSEN" description="页面不存在">
+  <div class="container">
+    <main class="error-page">
+      <p class="eyebrow">404</p>
+
+      <h1>页面不存在</h1>
+
+      <p class="description">
+        你访问的页面可能已经被删除、移动，或者链接地址有误。
+      </p>
+
+      <a class="back-home" href="/">
+        ← 返回首页
+      </a>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .error-page {
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 0;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  h1 {
+    margin: 14px 0 0;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .description {
+    max-width: 520px;
+    margin: 28px 0 0;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .back-home {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    background: var(--text);
+    color: var(--inverse-text);
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .back-home:hover {
+    background: var(--inverse-hover);
+    border-color: var(--text);
+  }
+</style>

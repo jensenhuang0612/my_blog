@@ -1,0 +1,205 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+
+const aiPosts = posts
+  .filter((post) => post.data.category === "AI")
+  .sort(
+    (a, b) =>
+      b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+---
+
+<Layout
+  title="AI — JENSEN"
+  description="JENSEN 的 AI API、本地模型、自动化以及个人 AI 工具和实验。"
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">ARTIFICIAL INTELLIGENCE</p>
+
+      <h1>AI</h1>
+
+      <p class="intro">
+        AI API、本地模型、自动化以及个人 AI 工具和实验。
+      </p>
+    </header>
+
+    <section class="articles">
+      <div class="section-header">
+        <p class="eyebrow">ARTICLES</p>
+        <span>{aiPosts.length} ARTICLES</span>
+      </div>
+
+      {
+        aiPosts.map((post) => (
+          <a href={`/posts/${post.id}/`} class="article">
+            <div class="article-content">
+              <time>
+                {post.data.date.toLocaleDateString("zh-CN")}
+              </time>
+
+              <h2>{post.data.title}</h2>
+
+              <p>{post.data.description}</p>
+
+              <div class="tags">
+                {post.data.tags.map((tag) => (
+                  <span>{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            <span class="arrow">→</span>
+          </a>
+        ))
+      }
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .page-header h1 {
+    margin: 14px 0 0;
+    font-size: clamp(4rem, 10vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.08em;
+  }
+
+  .intro {
+    max-width: 680px;
+    margin: 32px 0 0;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+
+  .articles {
+    padding: 70px 0 120px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .section-header span {
+    color: var(--muted);
+    font-family:
+      "JetBrains Mono",
+      Consolas,
+      monospace;
+    font-size: 0.75rem;
+  }
+
+  .article {
+    display: grid;
+    grid-template-columns: 1fr 40px;
+    gap: 30px;
+    align-items: center;
+
+    padding: 32px;
+
+    border-top: 1px solid var(--border);
+
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .article:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .article:is(:hover, :focus-visible) {
+    background: var(--surface-hover);
+    transform: translateX(8px);
+  }
+
+  time {
+    color: var(--muted);
+    font-family:
+      "JetBrains Mono",
+      Consolas,
+      monospace;
+    font-size: 0.75rem;
+  }
+
+  .article h2 {
+    margin: 8px 0 0;
+    font-size: 1.8rem;
+    letter-spacing: -0.04em;
+  }
+
+  .article p {
+    max-width: 700px;
+    margin: 10px 0 0;
+    color: var(--muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .tags span {
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+
+  .arrow {
+    color: var(--muted);
+    font-size: 1.5rem;
+    transition:
+      transform 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .article:is(:hover, :focus-visible) .arrow {
+    color: var(--text);
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 700px) {
+    .page-header {
+      padding: 80px 0 60px;
+    }
+
+    .article {
+      grid-template-columns: 1fr;
+      padding: 24px 20px;
+    }
+
+    .article:is(:hover, :focus-visible) {
+      transform: translateX(4px);
+    }
+
+    .arrow {
+      display: none;
+    }
+
+    .article h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

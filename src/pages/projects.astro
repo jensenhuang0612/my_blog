@@ -1,0 +1,284 @@
+---
+import Layout from "../../src/layouts/Layout.astro";
+---
+
+<Layout
+  title="项目 — JENSEN"
+  description="JENSEN 的技术项目、Homelab、Networking、Security 与 AI 实践。"
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">PROJECTS</p>
+
+      <h1>项目</h1>
+
+      <p class="intro">
+        这里记录我正在进行、已经完成以及长期维护的技术项目。
+        <br />
+        不只是展示结果，也记录整个实践过程。
+      </p>
+    </header>
+
+    <section class="projects">
+      <a href="/projects/homelab/" class="project">
+        <div class="number">01</div>
+
+        <div class="content">
+          <p class="category">INFRASTRUCTURE</p>
+
+          <h2>Homelab</h2>
+
+          <p class="description">
+            家庭服务器、NAS、Docker、Linux、虚拟化以及各种自建服务。
+          </p>
+
+          <div class="tags">
+            <span>Linux</span>
+            <span>Docker</span>
+            <span>NAS</span>
+            <span>Server</span>
+          </div>
+        </div>
+
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="/projects/networking/" class="project">
+        <div class="number">02</div>
+
+        <div class="content">
+          <p class="category">NETWORKING</p>
+
+          <h2>Networking</h2>
+
+          <p class="description">
+            家庭网络、代理、隧道、DNS、Cloudflare 以及网络架构实验。
+          </p>
+
+          <div class="tags">
+            <span>Network</span>
+            <span>DNS</span>
+            <span>Cloudflare</span>
+            <span>Proxy</span>
+          </div>
+        </div>
+
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="/projects/security/" class="project">
+        <div class="number">03</div>
+
+        <div class="content">
+          <p class="category">SECURITY</p>
+
+          <h2>Security</h2>
+
+          <p class="description">
+            信息安全、防御、安全配置、系统安全以及安全实验。
+          </p>
+
+          <div class="tags">
+            <span>Security</span>
+            <span>Linux</span>
+            <span>Defense</span>
+            <span>Hardening</span>
+          </div>
+        </div>
+
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="/projects/ai/" class="project">
+        <div class="number">04</div>
+
+        <div class="content">
+          <p class="category">ARTIFICIAL INTELLIGENCE</p>
+
+          <h2>AI</h2>
+
+          <p class="description">
+            AI API、本地模型、自动化以及个人 AI 工具和实验。
+          </p>
+
+          <div class="tags">
+            <span>AI</span>
+            <span>LLM</span>
+            <span>API</span>
+            <span>Automation</span>
+          </div>
+        </div>
+
+        <span class="arrow">→</span>
+      </a>
+    </section>
+
+    <section class="notes">
+      <p class="eyebrow">NOTE</p>
+
+      <h2>这里不只是展示项目</h2>
+
+      <p>
+        我希望这个页面最终成为一个技术项目索引。
+        每个项目都会记录使用的技术、架构、配置过程、遇到的问题以及最终结果。
+      </p>
+
+      <p>
+        随着项目增加，这里会逐渐变成一个完整的技术档案。
+      </p>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .page-header h1 {
+    margin: 14px 0 0;
+    font-size: clamp(4rem, 10vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.08em;
+  }
+
+  .intro {
+    max-width: 680px;
+    margin: 32px 0 0;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+
+  .projects {
+    border-left: 1px solid var(--border);
+  }
+
+  .project {
+    display: grid;
+    grid-template-columns: 70px 1fr 40px;
+    gap: 30px;
+    align-items: start;
+
+    padding: 48px 32px;
+
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .project:first-child {
+    border-top: 0;
+  }
+
+  .project:is(:hover, :focus-visible) {
+    background: var(--surface-hover);
+    transform: translateX(8px);
+  }
+
+  .number {
+    color: var(--muted);
+    font-family:
+      "JetBrains Mono",
+      Consolas,
+      monospace;
+    font-size: 0.8rem;
+  }
+
+  .category {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .content h2 {
+    margin: 0;
+    font-size: 2.2rem;
+    letter-spacing: -0.05em;
+  }
+
+  .description {
+    max-width: 650px;
+    margin: 14px 0 0;
+    color: var(--muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .tags span {
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .arrow {
+    color: var(--muted);
+    font-size: 1.5rem;
+    transition:
+      transform 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .project:is(:hover, :focus-visible) .arrow {
+    color: var(--text);
+    transform: translateX(5px);
+  }
+
+  .notes {
+    max-width: 720px;
+    padding: 100px 0 120px;
+  }
+
+  .notes h2 {
+    margin: 14px 0 20px;
+    font-size: 2rem;
+    letter-spacing: -0.04em;
+  }
+
+  .notes p:not(.eyebrow) {
+    color: var(--muted);
+  }
+
+  @media (max-width: 700px) {
+    .page-header {
+      padding: 80px 0 60px;
+    }
+
+    .project {
+      grid-template-columns: 40px 1fr;
+      gap: 20px;
+      padding: 36px 20px;
+    }
+
+    .project:is(:hover, :focus-visible) {
+      transform: translateX(4px);
+    }
+
+    .arrow {
+      display: none;
+    }
+
+    .content h2 {
+      font-size: 1.8rem;
+    }
+  }
+</style>

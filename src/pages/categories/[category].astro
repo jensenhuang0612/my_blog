@@ -1,0 +1,164 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+
+  const categories = [
+    ...new Set(posts.map((post) => post.data.category)),
+  ];
+
+  return categories.map((category) => ({
+    params: {
+      category,
+    },
+    props: {
+      category,
+      posts: posts
+        .filter((post) => post.data.category === category)
+        .sort(
+          (a, b) =>
+            b.data.date.valueOf() - a.data.date.valueOf(),
+        ),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+
+<Layout
+  title={`${category} — JENSEN`}
+  description={`JENSEN 博客 ${category} 分类文章`}
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">CATEGORY</p>
+
+      <h1>{category}</h1>
+
+      <p>
+        {posts.length} 篇文章
+      </p>
+    </header>
+
+    <section class="post-list">
+      {
+        posts.map((post) => (
+          <a
+            href={`/posts/${post.id}/`}
+            class="post"
+          >
+            <div class="post-info">
+              <time datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString("zh-CN")}
+              </time>
+            </div>
+
+            <h2>{post.data.title}</h2>
+
+            <p>
+              {post.data.description}
+            </p>
+
+            <div class="tags">
+              {
+                post.data.tags.map((tag) => (
+                  <span>#{tag}</span>
+                ))
+              }
+            </div>
+          </a>
+        ))
+      }
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    padding: 100px 0 70px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  h1 {
+    margin: 12px 0 0;
+    font-size: 4rem;
+    letter-spacing: -0.06em;
+  }
+
+  .page-header > p:last-child {
+    margin-top: 20px;
+    color: var(--muted);
+  }
+
+  .post-list {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post {
+    display: block;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .post:last-child {
+    border-bottom: 0;
+  }
+
+  .post:is(:hover, :focus-visible) {
+    background: var(--surface-hover);
+    transform: translateX(8px);
+  }
+
+  .post:is(:hover, :focus-visible) h2 {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  .post-info {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .post h2 {
+    margin: 12px 0 8px;
+    font-size: 1.6rem;
+    letter-spacing: -0.03em;
+  }
+
+  .post p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 700px) {
+    h1 {
+      font-size: 3rem;
+    }
+
+    .post:is(:hover, :focus-visible) {
+      transform: translateX(4px);
+    }
+  }
+</style>

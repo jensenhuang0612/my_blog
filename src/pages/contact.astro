@@ -1,0 +1,319 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="联系 — JENSEN"
+  description="联系 JENSEN"
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">CONTACT</p>
+      <h1>联系</h1>
+      <p>如果你想交流技术、项目或者其他事情，可以通过下面的方式联系我。</p>
+    </header>
+
+    <section class="contact-list">
+      <a
+        class="contact-item"
+        href="mailto:jensnehuang0612@gmail.com"
+      >
+        <div class="contact-icon">✉</div>
+
+        <div class="contact-content">
+          <p class="contact-label">Email</p>
+          <h2>电子邮件</h2>
+          <p>适合技术交流、项目合作以及正式联系。</p>
+        </div>
+
+        <span class="arrow">→</span>
+      </a>
+
+      <button
+        class="contact-item contact-button"
+        type="button"
+        aria-label="查看微信二维码"
+      >
+        <div class="contact-icon">◆</div>
+
+        <div class="contact-content">
+          <p class="contact-label">WeChat</p>
+          <h2>微信</h2>
+          <p>点击查看微信二维码。</p>
+        </div>
+
+        <span class="arrow">→</span>
+      </button>
+
+      <a
+        class="contact-item"
+        href="https://t.me/jensenhuang0612"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="contact-icon">✈</div>
+
+        <div class="contact-content">
+          <p class="contact-label">Telegram</p>
+          <h2>Telegram</h2>
+          <p>用于即时交流。</p>
+        </div>
+
+        <span class="arrow">→</span>
+      </a>
+    </section>
+  </div>
+</Layout>
+
+<div class="qr-modal" aria-hidden="true">
+  <button class="qr-close" type="button" aria-label="关闭二维码">
+    ×
+  </button>
+
+  <div class="qr-modal-content">
+    <img
+      src="/images/chat/wechat-qr.png"
+      alt="微信二维码"
+    />
+    <p>微信二维码</p>
+  </div>
+</div>
+
+<script>
+  const qrButton = document.querySelector(".contact-button");
+  const qrModal = document.querySelector(".qr-modal");
+  const qrClose = document.querySelector(".qr-close");
+
+  qrButton?.addEventListener("click", () => {
+    qrModal?.classList.add("open");
+    qrModal?.setAttribute("aria-hidden", "false");
+  });
+
+  qrClose?.addEventListener("click", () => {
+    qrModal?.classList.remove("open");
+    qrModal?.setAttribute("aria-hidden", "true");
+  });
+
+  qrModal?.addEventListener("click", (event) => {
+    if (event.target === qrModal) {
+      qrModal.classList.remove("open");
+      qrModal.setAttribute("aria-hidden", "true");
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      qrModal?.classList.remove("open");
+      qrModal?.setAttribute("aria-hidden", "true");
+    }
+  });
+</script>
+
+<style>
+  .page-header {
+    padding: 100px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .page-header h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .page-header > p:last-child {
+    max-width: 600px;
+    margin: 24px 0 0;
+    color: var(--muted);
+  }
+
+  .contact-list {
+    max-width: 760px;
+    padding: 60px 0 100px;
+  }
+
+  .contact-item {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 24px;
+    align-items: center;
+
+    padding: 28px 0;
+
+    border: 0;
+    border-bottom: 1px solid var(--border);
+
+    background: transparent;
+    color: var(--text);
+
+    text-align: left;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+      padding-left 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .contact-item:hover {
+    padding-left: 12px;
+  }
+
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    font-size: 1rem;
+  }
+
+  .contact-content {
+    min-width: 0;
+  }
+
+  .contact-label {
+    margin: 0 0 4px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact-content h2 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  .contact-content p:last-child {
+    max-width: 600px;
+    margin: 6px 0 0;
+    color: var(--muted);
+  }
+
+  .arrow {
+    font-size: 1.25rem;
+    opacity: 0.7;
+    transition: transform 0.2s ease;
+  }
+
+  .contact-item:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  .qr-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgb(0 0 0 / 0.7);
+
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .qr-modal.open {
+    display: flex;
+    opacity: 1;
+  }
+
+  .qr-modal-content {
+    position: relative;
+
+    width: min(420px, 100%);
+    padding: 24px;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+
+    text-align: center;
+
+    transform: scale(1.03);
+    transition: transform 0.2s ease;
+  }
+
+  .qr-modal.open .qr-modal-content {
+    transform: scale(1);
+  }
+
+  .qr-modal-content img {
+    display: block;
+    width: min(320px, 100%);
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .qr-modal-content p {
+    margin: 14px 0 0;
+    color: var(--muted);
+  }
+
+  .qr-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgb(255 255 255 / 0.5);
+    border-radius: 50%;
+
+    background: rgb(0 0 0 / 0.5);
+    color: white;
+
+    font-size: 1.5rem;
+    line-height: 1;
+
+    cursor: pointer;
+  }
+
+  @media (max-width: 700px) {
+    .page-header {
+      padding: 80px 0 50px;
+    }
+
+    .contact-list {
+      padding: 40px 0 80px;
+    }
+
+    .contact-item {
+      grid-template-columns: 40px 1fr auto;
+      gap: 16px;
+      padding: 24px 0;
+    }
+
+    .contact-content p:last-child {
+      display: none;
+    }
+  }
+</style>

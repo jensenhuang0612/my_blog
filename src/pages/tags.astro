@@ -1,0 +1,111 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+
+const tags = new Map<string, number>();
+
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    tags.set(tag, (tags.get(tag) ?? 0) + 1);
+  }
+}
+
+const sortedTags = [...tags.entries()].sort((a, b) =>
+  a[0].localeCompare(b[0]),
+);
+---
+
+<Layout
+  title="Tags — JENSEN"
+  description="JENSEN 博客文章标签"
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">TAGS</p>
+
+      <h1>Tags</h1>
+
+      <p>
+        按技术关键词浏览文章。
+      </p>
+    </header>
+
+    <section class="tag-list">
+      {
+        sortedTags.map(([tag, count]) => (
+          <a
+            href={`/tags/${encodeURIComponent(tag)}/`}
+            class="tag"
+          >
+            <span>#{tag}</span>
+            <small>{count} 篇文章 →</small>
+          </a>
+        ))
+      }
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    padding: 100px 0 70px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  h1 {
+    margin: 12px 0 0;
+    font-size: 4rem;
+    letter-spacing: -0.06em;
+  }
+
+  .page-header > p:last-child {
+    margin-top: 20px;
+    color: var(--muted);
+  }
+
+  .tag-list {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tag {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tag:last-child {
+    border-bottom: 0;
+  }
+
+  .tag span {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .tag small {
+    color: var(--muted);
+  }
+
+  .tag:hover span {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  @media (max-width: 700px) {
+    h1 {
+      font-size: 3rem;
+    }
+  }
+</style>
