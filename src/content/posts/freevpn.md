@@ -24,31 +24,31 @@ tags:
 
 点击右上角注册
 
-![图片说明](/images/freevpn/01.png)
+![图片说明](/images/freevpn/01.webp)
 
 按照提示注册（部分邮箱不可用，如QQ邮箱）
 
-![图片说明](/images/freevpn/02.png)
+![图片说明](/images/freevpn/02.webp)
 
 点击左侧免费域名
 
-![图片说明](/images/freevpn/03.png)
+![图片说明](/images/freevpn/03.webp)
 
 点击注册域名
 
-![图片说明](/images/freevpn/04.png)
+![图片说明](/images/freevpn/04.webp)
 
 随便选择一个根域名
 
-![图片说明](/images/freevpn/05.png)
+![图片说明](/images/freevpn/05.webp)
 
 随便填一个域名前缀，点击确认注册
 
-![图片说明](/images/freevpn/06.png)
+![图片说明](/images/freevpn/06.webp)
 
 ok，你的免费域名注册完成了，复制此域名
 
-![图片说明](/images/freevpn/07.png)
+![图片说明](/images/freevpn/07.webp)
 
 # 域名解析
 打开Cloudflare
@@ -59,87 +59,87 @@ ok，你的免费域名注册完成了，复制此域名
 
 跟着指引注册
 
-![图片说明](/images/freevpn/08.png)
+![图片说明](/images/freevpn/08.webp)
 
 点击左侧域名选项
 
-![图片说明](/images/freevpn/09.png)
+![图片说明](/images/freevpn/09.webp)
 
 点击右上角添加域名
 
-![图片说明](/images/freevpn/10.png)
+![图片说明](/images/freevpn/10.webp)
 
 将域名粘贴到example.com，<strong>关闭I monetize pages that serve ads,三个选项都设置为阻止，Enable Bot Preferece Sync关闭，一定要按照我的设置来！！！</strong>点击继续
 
-![图片说明](/images/freevpn/11.png)
+![图片说明](/images/freevpn/11.webp)
 
 点击月费＄0的免费计划
 
-![图片说明](/images/freevpn/12.png)
+![图片说明](/images/freevpn/12.webp)
 
 点击下方继续前往激活
 
-![图片说明](/images/freevpn/13.png)
+![图片说明](/images/freevpn/13.webp)
 
 复制这两个名称服务器地址
 
-![图片说明](/images/freevpn/14.png)
+![图片说明](/images/freevpn/14.webp)
 
 回到免费域名网站，点击管理域名
 
-![图片说明](/images/freevpn/15.png)
+![图片说明](/images/freevpn/15.webp)
 
 点击DNS服务器
 
-![图片说明](/images/freevpn/16.png)
+![图片说明](/images/freevpn/16.webp)
 
 填入2个名称服务器地址
 
-![图片说明](/images/freevpn/17.png)
+![图片说明](/images/freevpn/17.webp)
 
 点击下方我已更新名称服务器
 
-![图片说明](/images/freevpn/18.png)
+![图片说明](/images/freevpn/18.webp)
 
 # 编辑Workers KV
 
 点击左侧存储和数据库/Workers KV
 
-![图片说明](/images/freevpn/19.png)
+![图片说明](/images/freevpn/19.webp)
 
 点击右上角创建KV命名空间
 
-![图片说明](/images/freevpn/20.png)
+![图片说明](/images/freevpn/20.webp)
 
 给空间名称命名，点创建
 
-![图片说明](/images/freevpn/21.png)
+![图片说明](/images/freevpn/21.webp)
 
 点击左侧计算/Workers和Pages
 
-![图片说明](/images/freevpn/22.png)
+![图片说明](/images/freevpn/22.webp)
 
 点击右侧创建应用程序
 
-![图片说明](/images/freevpn/23.png)
+![图片说明](/images/freevpn/23.webp)
 
 点击从Hello World!开始
 
-![图片说明](/images/freevpn/24.png)
+![图片说明](/images/freevpn/24.webp)
 
 点击部署
 
-![图片说明](/images/freevpn/25.png)
+![图片说明](/images/freevpn/25.webp)
 
 点击右上角编辑代码
 
-![图片说明](/images/freevpn/26.png)
+![图片说明](/images/freevpn/26.webp)
 
 # 代码
 
 删除原有全部代码
 
-![图片说明](/images/freevpn/27.png)
+![图片说明](/images/freevpn/27.webp)
 
 <a href="https://github.com/cmliu/edgetunnel/blob/main/_worker.js" target="_blank" rel="noopener noreferrer">
 <strong>原作者</strong>
@@ -6797,65 +6797,65 @@ async function html1101(host, 访问IP) {
 
 将代码复制进去，像这样，然后点击部署
 
-![图片说明](/images/freevpn/28.png)
+![图片说明](/images/freevpn/28.webp)
 
 点击域
 
-![图片说明](/images/freevpn/29.png)
+![图片说明](/images/freevpn/29.webp)
 
 点击添加域名
 
-![图片说明](/images/freevpn/30.png)
+![图片说明](/images/freevpn/30.webp)
 
 直接点击添加域名
 
-![图片说明](/images/freevpn/31.png)
+![图片说明](/images/freevpn/31.webp)
 
 点击设置
 
-![图片说明](/images/freevpn/32.png)
+![图片说明](/images/freevpn/32.webp)
 
 点击添加变量
 
-![图片说明](/images/freevpn/51.png)
+![图片说明](/images/freevpn/51.webp)
 
 点击密钥填一个用户名，点击值设置密码（推荐设置复杂密码）
 
-![图片说明](/images/freevpn/33.png)
+![图片说明](/images/freevpn/33.webp)
 
 点击Add 1 variable and deploy
 
-![图片说明](/images/freevpn/34.png)
+![图片说明](/images/freevpn/34.webp)
 
 点击添加绑定
 
-![图片说明](/images/freevpn/35.png)
+![图片说明](/images/freevpn/35.webp)
 
 点击KV命名空间
 
-![图片说明](/images/freevpn/36.png)
+![图片说明](/images/freevpn/36.webp)
 
 点击添加绑定
 
-![图片说明](/images/freevpn/37.png)
+![图片说明](/images/freevpn/37.webp)
 
 填变量名称，选择刚刚创建的KV空间命名点击，添加绑定
 
-![图片说明](/images/freevpn/38.png)
+![图片说明](/images/freevpn/38.webp)
 
 # 订阅设置
 
 将刚刚注册的免费域名复制到浏览器并加上/admin
 
-![图片说明](/images/freevpn/39.png)
+![图片说明](/images/freevpn/39.webp)
 
 输入你刚刚设置的密码
 
-![图片说明](/images/freevpn/40.png)
+![图片说明](/images/freevpn/40.webp)
 
 点击优选订阅模式，改成优选订阅生成器（抄作业，直接使用大佬优选好的结果）
 
-![图片说明](/images/freevpn/41.png)
+![图片说明](/images/freevpn/41.webp)
 
 将此代码填入优选订阅生成器
 
@@ -6863,15 +6863,15 @@ async function html1101(host, 访问IP) {
 Cm.Soso.Edu.Kg
 ```
 
-![图片说明](/images/freevpn/42.png)
+![图片说明](/images/freevpn/42.webp)
 
 点击上方“我是高手！我就要折腾！”（虽然你不是高手）
 
-![图片说明](/images/freevpn/43.png)
+![图片说明](/images/freevpn/43.webp)
 
 下拉找到Cloudflare CDN 访问设置
 
-![图片说明](/images/freevpn/44.png)
+![图片说明](/images/freevpn/44.webp)
 
 反代模式保持PROXYIP别动，关闭自动获取，将下面代码填入PROXYIP，然后点击保存
 
@@ -6879,13 +6879,13 @@ Cm.Soso.Edu.Kg
 ProxyIP.US.CMLiussss.Net
 ```
 
-![图片说明](/images/freevpn/45.png)
+![图片说明](/images/freevpn/45.webp)
 
 # 订阅链接
 
 点击复制订阅
 
-![图片说明](/images/freevpn/46.png)
+![图片说明](/images/freevpn/46.webp)
 
 打开你的代理软件，我用的是v2rayN，点击配置项，点击从剪贴板导入分享链接
 <a href="https://github.com/2dust/v2rayN/releases" target="_blank" rel="noopener noreferrer">
@@ -6896,15 +6896,15 @@ v2rayN
 v2rayN使用教程
 </a>
 
-![图片说明](/images/freevpn/47.png)
+![图片说明](/images/freevpn/47.webp)
 
 导入成功后点击订阅分组，点击更新全部代理（不通过代理）
 
-![图片说明](/images/freevpn/48.png)
+![图片说明](/images/freevpn/48.webp)
 
 选择一个你看着顺眼的节点，右键，点击设为活动
 
-![图片说明](/images/freevpn/49.png)
+![图片说明](/images/freevpn/49.webp)
 
 点击路由，选择
 <a href="https://blog.164346.xyz/posts/v2rayn-basic/#路由设置" target="_blank" rel="noopener noreferrer">
@@ -6912,7 +6912,7 @@ v2rayN使用教程
 </a>
 选择完美分流规则
 
-![图片说明](/images/freevpn/50.png)
+![图片说明](/images/freevpn/50.webp)
 
 # 总结
 到这里，你的免费 VPN 就已经搭建完成了
@@ -6923,4 +6923,4 @@ v2rayN使用教程
 
 如果这篇教程对你有帮助，也可以点击右上角的「赞助」支持一下。球球了 🥺
 
-![图片说明](/images/freevpn/please.png)
+![图片说明](/images/freevpn/please.webp)
