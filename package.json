@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist"
+    "build": "astro check && astro build && pagefind --site dist",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
@@ -27,7 +27,8 @@
     "@typescript-eslint/parser": "^8.62.0",
     "eslint": "^10.6.0",
     "eslint-plugin-astro": "^2.1.1",
-    "pagefind": "^1.5.2",
+    "eslint": "^10.6.0",
+    "eslint-plugin-astro": "^2.1.1",
     "prettier": "3.9.3",
     "prettier-plugin-astro": "0.14.1",
     "typescript": "^6.0.3"
