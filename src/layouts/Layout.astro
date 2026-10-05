@@ -1,4 +1,4 @@
----
+﻿---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
@@ -233,8 +233,6 @@ const ogImage = Astro.site
         lineCount = text ? text.split("\n").length : 0;
       }
 
-      var lines = new Array(lineCount);
-
       if (lineCount <= 6) return;
 
       wrapper.setAttribute("data-jensen-ready", "1");
@@ -367,3 +365,4 @@ const ogImage = Astro.site
 }
 </style>
 <!-- JENSEN_CODE_CONTROLS -->
+
