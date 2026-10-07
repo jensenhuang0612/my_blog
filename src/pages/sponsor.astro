@@ -69,11 +69,17 @@ import Layout from "../layouts/Layout.astro";
   }
 
   .sponsor-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 60px 0 100px;
-  }
+  display: flex;
+  justify-content: center;
+  padding: 60px 0 100px;
+}
+
+.sponsor-card {
+  width: min(100%, 420px);
+  padding: 28px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
 
   .sponsor-card {
     padding: 28px;
