@@ -1,4 +1,4 @@
----
+﻿---
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -16,7 +16,7 @@ import Layout from "../layouts/Layout.astro";
     <section class="contact-list">
       <a
         class="contact-item"
-        href="mailto:jensnehuang0612@gmail.com"
+        href="mailto:jensenblog@outlook.com"
       >
         <div class="contact-icon">✉</div>
 
@@ -28,22 +28,6 @@ import Layout from "../layouts/Layout.astro";
 
         <span class="arrow">→</span>
       </a>
-
-      <button
-        class="contact-item contact-button"
-        type="button"
-        aria-label="查看微信二维码"
-      >
-        <div class="contact-icon">◆</div>
-
-        <div class="contact-content">
-          <p class="contact-label">WeChat</p>
-          <h2>微信</h2>
-          <p>点击查看微信二维码。</p>
-        </div>
-
-        <span class="arrow">→</span>
-      </button>
 
       <a
         class="contact-item"
@@ -64,50 +48,6 @@ import Layout from "../layouts/Layout.astro";
     </section>
   </div>
 </Layout>
-
-<div class="qr-modal" aria-hidden="true">
-  <button class="qr-close" type="button" aria-label="关闭二维码">
-    ×
-  </button>
-
-  <div class="qr-modal-content">
-    <img
-      src="/images/chat/wechat-qr.png"
-      alt="微信二维码"
-    />
-    <p>微信二维码</p>
-  </div>
-</div>
-
-<script>
-  const qrButton = document.querySelector(".contact-button");
-  const qrModal = document.querySelector(".qr-modal");
-  const qrClose = document.querySelector(".qr-close");
-
-  qrButton?.addEventListener("click", () => {
-    qrModal?.classList.add("open");
-    qrModal?.setAttribute("aria-hidden", "false");
-  });
-
-  qrClose?.addEventListener("click", () => {
-    qrModal?.classList.remove("open");
-    qrModal?.setAttribute("aria-hidden", "true");
-  });
-
-  qrModal?.addEventListener("click", (event) => {
-    if (event.target === qrModal) {
-      qrModal.classList.remove("open");
-      qrModal.setAttribute("aria-hidden", "true");
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      qrModal?.classList.remove("open");
-      qrModal?.setAttribute("aria-hidden", "true");
-    }
-  });
-</script>
 
 <style>
   .page-header {
@@ -147,20 +87,14 @@ import Layout from "../layouts/Layout.astro";
     grid-template-columns: 40px 1fr auto;
     gap: 24px;
     align-items: center;
-
     padding: 28px 0;
-
     border: 0;
     border-bottom: 1px solid var(--border);
-
     background: transparent;
     color: var(--text);
-
     text-align: left;
     text-decoration: none;
-
     cursor: pointer;
-
     transition:
       padding-left 0.2s ease,
       opacity 0.2s ease;
@@ -173,14 +107,11 @@ import Layout from "../layouts/Layout.astro";
   .contact-icon {
     width: 40px;
     height: 40px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border: 1px solid var(--border);
     border-radius: 50%;
-
     font-size: 1rem;
   }
 
@@ -216,85 +147,6 @@ import Layout from "../layouts/Layout.astro";
 
   .contact-item:hover .arrow {
     transform: translateX(4px);
-  }
-
-  .qr-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-
-    display: none;
-    align-items: center;
-    justify-content: center;
-
-    padding: 24px;
-
-    background: rgb(0 0 0 / 0.7);
-
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .qr-modal.open {
-    display: flex;
-    opacity: 1;
-  }
-
-  .qr-modal-content {
-    position: relative;
-
-    width: min(420px, 100%);
-    padding: 24px;
-
-    background: var(--bg);
-    border: 1px solid var(--border);
-
-    text-align: center;
-
-    transform: scale(1.03);
-    transition: transform 0.2s ease;
-  }
-
-  .qr-modal.open .qr-modal-content {
-    transform: scale(1);
-  }
-
-  .qr-modal-content img {
-    display: block;
-    width: min(320px, 100%);
-    height: auto;
-    margin: 0 auto;
-  }
-
-  .qr-modal-content p {
-    margin: 14px 0 0;
-    color: var(--muted);
-  }
-
-  .qr-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-
-    width: 40px;
-    height: 40px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border: 1px solid rgb(255 255 255 / 0.5);
-    border-radius: 50%;
-
-    background: rgb(0 0 0 / 0.5);
-    color: white;
-
-    font-size: 1.5rem;
-    line-height: 1;
-
-    cursor: pointer;
   }
 
   @media (max-width: 700px) {
